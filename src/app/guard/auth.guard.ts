@@ -11,11 +11,12 @@ export class AuthGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate() {
-    if (this.service.isLoggedIn()) {
+  canActivate(): boolean {
+    const token = localStorage.getItem('jwt');
+    if (token) {
       return true;
     } else {
-      this.router.navigate(['login']);
+      this.router.navigate(['/login']);
       return false;
     }
   }

@@ -1,11 +1,8 @@
 <div class="navbar">
-    <div class="user ps-5">
-        <img src="https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_960_720.png" alt="" height="150px"
-            width="150px" />
-        <p class="name">Admin</p>
-        <!-- <p class="mail">admin@gmail.com</p> -->
+    <div class="user ps-5 pb-5">
+        <img src="assets\Images\images.png">
     </div>
-    <div class="menu"> 
+    <div class="menu">
         <div class="menu-head text-center">
             <span>Dashboard</span>
         </div>
@@ -14,37 +11,10 @@
                 <mat-icon>dashboard</mat-icon>
                 <span>Home</span>
             </button>
-           
-            <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['Users']">
-                <mat-icon>people</mat-icon>
-                <span>Users</span>
-            </button>
-            <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['artists']">
-                <mat-icon>people</mat-icon>
-                <span>Artist</span>
-            </button>
-            <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['organizers']">
-                <mat-icon>people</mat-icon>
-                <span>Organizers</span>
-            </button>
-            <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['subscription']">
-                <mat-icon>currency_rupee</mat-icon>
-                <span>Subscription</span>
-            </button>
-            
-            <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['App_config']">
-                <mat-icon>settings</mat-icon>
-                <span>App Config</span>
-            </button>
-            <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['change_password/1']">
-                <mat-icon>lock_reset</mat-icon>
-                <span>Change Password</span>
-            </button>
-            
             <button mat-button class="menu-button" (click)="logout()">
                 <mat-icon>logout</mat-icon>
                 <span>Logout</span>
-              </button>
+            </button>
         </div>
     </div>
 </div>

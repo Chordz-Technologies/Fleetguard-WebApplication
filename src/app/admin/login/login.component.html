@@ -2,19 +2,22 @@
   <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around center">
     <mat-card class="login-card">
       <mat-card-title>
-        <img src="assets\Images\meet my artist.jpeg">
+        <img src="assets/Images/images.png">
       </mat-card-title>
       <mat-card-content>
-        <form class="example-form" (submit)="login()">
+        <form class="example-form" (submit)="login($event)">
           <mat-form-field class="example-full-width">
             <mat-label><i class="fa fa-user"></i>&nbsp; Adminname</mat-label>
-            <input matInput type="text" id="adminname" [(ngModel)]="adminname" name="adminname" required />
+            <input matInput type="email" id="email" [(ngModel)]="email" name="email" required />
           </mat-form-field>
 
           <mat-form-field class="example-full-width">
             <mat-label><i class="fa fa-lock"></i>&nbsp; Password</mat-label>
-            <input matInput type="password" id="adminpassword" [(ngModel)]="adminpassword" name="adminpassword"
-              required />
+            <input matInput [type]="hide ? 'password' : 'text'" id="password"
+              [(ngModel)]="password" name="password" required />
+            <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
           </mat-form-field><br>
 
           <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutGap="25px">

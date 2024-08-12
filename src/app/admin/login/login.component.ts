@@ -9,10 +9,14 @@ import { AuthService } from 'src/app/shared/service/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  email: string = '';
+  password: string = '';
+  hide = true;
 
-  adminname: string = '';
-  adminpassword: string = '';
-
+  togglePasswordVisibility() {
+    this.hide = !this.hide;
+  }
+  
   constructor(private authService: AuthService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
@@ -27,13 +31,15 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login() {
-    this.authService.login(this.adminname, this.adminpassword)
+  login(event: Event) {
+    event.preventDefault(); // Prevent default form submission
+
+    this.authService.login(this.email, this.password)
       .subscribe({
         next: (result: any) => {
-          if (result && result.message === 'Valid User') {
-            localStorage.setItem('admin', JSON.stringify(result));
-            this.router.navigate(['home']);
+          if (result && result.jwt) {
+            localStorage.setItem('jwt', result.jwt);
+            this.router.navigate(['dashboard']);
             this.toastr.success('Login successful!', 'Success');
           } else {
             this.toastr.error('Login failed. Please check your credentials.', 'Error');
@@ -41,7 +47,7 @@ export class LoginComponent implements OnInit {
         },
         error: (err: any) => {
           console.error('Error:', err);
-          this.toastr.error('Invalid credentials. Please check your credentials. ', 'Error');
+          this.toastr.error('Invalid credentials. Please check your credentials.', 'Error');
         }
       });
   }

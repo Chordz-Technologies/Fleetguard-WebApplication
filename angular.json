@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Ekari100Ton": {
+    "FleetGuard": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ekari100-ton",
+            "outputPath": "dist/FleetGuard",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -43,13 +43,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "7kb",
+                  "maximumError": "7kb"
                 }
               ],
               "outputHashing": "all"
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Ekari100Ton:build:production"
+              "browserTarget": "FleetGuard:build:production"
             },
             "development": {
-              "browserTarget": "Ekari100Ton:build:development"
+              "browserTarget": "FleetGuard:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Ekari100Ton:build"
+            "browserTarget": "FleetGuard:build"
           }
         },
         "test": {
