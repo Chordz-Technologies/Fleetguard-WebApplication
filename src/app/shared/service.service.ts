@@ -29,4 +29,10 @@ export class ServiceService {
     });
     return this.http.post<any>(`${this.url}/excelsheetapi/excelsheet/`, payload, { headers });
   }
+
+  changePassword(data: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/user/change-password/`, data);
+  }
+
+
 }

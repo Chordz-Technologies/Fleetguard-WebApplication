@@ -27,6 +27,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ForgotPasswordModalComponent } from './admin/login/forgot-password-modal/forgot-password-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/commo
     DashboardComponent,
     HomeComponent,
     SidebarComponent,
-    LoginComponent
+    LoginComponent,
+    ForgotPasswordModalComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,7 @@ import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/commo
 
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }
