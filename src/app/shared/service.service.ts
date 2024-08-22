@@ -34,5 +34,19 @@ export class ServiceService {
     return this.http.post<any>(`${this.url}/user/change-password/`, data);
   }
 
+  sendMail(data: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/user/forgot-password/`, data);
+  }
 
+  verifyOTP(data: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/user/verify-otp/`, data);
+  }
+
+  addUsers(data: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/user/register/`, data);
+  }
+
+  allUsers(): Observable<any> {
+    return this.http.get<any>(`${this.url}/user/list-all-users/`);
+  }
 }

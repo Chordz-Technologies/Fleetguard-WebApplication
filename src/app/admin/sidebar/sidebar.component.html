@@ -12,7 +12,7 @@
                     <mat-icon>dashboard</mat-icon>
                     <span>Home</span>
                 </button>
-                <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['users']">
+                <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['all-users']">
                     <mat-icon>peoples</mat-icon>
                     <span>Users</span>
                 </button>
@@ -27,9 +27,9 @@
     <ng-container *ngIf="User">
         <div class="menu">
             <div class="menu-head text-center">
-                <span>Dashboard</span>
+                <span class="text-center">User</span>
             </div>
-            <div class="menu-item">
+            <div class="menu-item pt-5">
                 <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['dashboard']">
                     <mat-icon>dashboard</mat-icon>
                     <span>Home</span>

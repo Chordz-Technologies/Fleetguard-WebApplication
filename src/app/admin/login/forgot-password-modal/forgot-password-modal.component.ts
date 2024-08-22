@@ -14,15 +14,15 @@ export class ForgotPasswordModalComponent implements OnInit {
   new_password: string = '';
   otpRequested = false;
   otpValidated = false;
-  minutes: number = 2;
-  seconds: number = 0;
   hidePassword = true;
+  minutes: number = 5;
+  seconds: number = 0;
   private timer: any;
 
   constructor(
     private dialogRef: MatDialogRef<ForgotPasswordModalComponent>,
     private toastr: ToastrService,
-    private service: ServiceService,
+    private service: ServiceService, // Inject the AuthService
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -30,33 +30,55 @@ export class ForgotPasswordModalComponent implements OnInit {
 
   onSubmit() {
     if (this.otpValidated) {
-      // Change password logic
       this.changePassword();
     } else if (this.otpRequested) {
-      // Validate OTP logic
       this.validateOtp();
     } else {
-      // Request OTP logic
       this.requestOtp();
     }
   }
 
   requestOtp() {
-    this.otpRequested = true;
-    this.startTimer();
-    // Implement OTP request logic here
-    this.toastr.success('OTP sent to your email!', 'Success');
+    const data = { email: this.email };
+
+    this.service.sendMail(data).subscribe({
+      next: (response: any) => {
+        if (response.message) {
+          this.toastr.success(response.message, 'Success');
+          this.otpRequested = true;
+          this.startTimer();
+        } else {
+          this.toastr.error(response.message || 'Failed to send OTP.', 'Error');
+        }
+      },
+      error: (err: any) => {
+        console.error('Error:', err);
+        this.toastr.error(err.error.message || 'Server error. Please try again later.', 'Error');
+      }
+    });
   }
 
   validateOtp() {
-    // Implement OTP validation logic here
-    if (this.otp === '123456') { // Replace with actual validation logic
-      this.otpValidated = true;
-      clearInterval(this.timer);
-      this.toastr.success('OTP validated successfully!', 'Success');
-    } else {
-      this.toastr.error('Invalid OTP. Please try again.', 'Error');
-    }
+    const data = {
+      email: this.email,
+      otp: this.otp
+    };
+
+    this.service.verifyOTP(data).subscribe({
+      next: (response: any) => {
+        if (response.message) {
+          this.toastr.success(response.message, 'Success');
+          this.otpValidated = true;
+          this.clearTimer();
+        } else {
+          this.toastr.error(response.message || 'OTP verification failed.', 'Error');
+        }
+      },
+      error: (err: any) => {
+        console.error('Error:', err);
+        this.toastr.error(err.error.message || 'Server error. Please try again later.', 'Error');
+      }
+    });
   }
 
   changePassword() {
@@ -71,13 +93,23 @@ export class ForgotPasswordModalComponent implements OnInit {
           this.toastr.success(response.message, 'Success');
           this.dialogRef.close();
         } else {
-          this.toastr.error(response.message, 'Error');
+          this.toastr.error(response.message || 'Password change failed.', 'Error');
         }
       },
       error: (err: any) => {
-        this.toastr.error(err.error.message, 'Error');
+        console.error('Error:', err);
+        this.toastr.error(err.error.message || 'Server error. Please try again later.', 'Error');
       }
     });
+  }
+
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  onClose() {
+    this.clearTimer();
+    this.dialogRef.close();
   }
 
   startTimer() {
@@ -87,7 +119,7 @@ export class ForgotPasswordModalComponent implements OnInit {
           this.minutes--;
           this.seconds = 59;
         } else {
-          clearInterval(this.timer);
+          this.clearTimer();
           this.toastr.error('OTP expired. Please request a new one.', 'Error');
           this.dialogRef.close();
         }
@@ -97,12 +129,9 @@ export class ForgotPasswordModalComponent implements OnInit {
     }, 1000);
   }
 
-  togglePasswordVisibility() {
-    this.hidePassword = !this.hidePassword;
-  }
-
-  onClose() {
+  clearTimer() {
     clearInterval(this.timer);
-    this.dialogRef.close();
+    this.minutes = 0;
+    this.seconds = 0;
   }
 }

@@ -28,6 +28,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ForgotPasswordModalComponent } from './admin/login/forgot-password-modal/forgot-password-modal.component';
+import { AllUsersComponent } from './admin/sidebar/all-users/all-users.component';
+import { AddUsersComponent } from './admin/sidebar/add-users/add-users.component';
+import { ChangePasswordDialogComponent } from './admin/sidebar/all-users/change-password-dialog/change-password-dialog.component';
 
 
 @NgModule({
@@ -37,7 +40,10 @@ import { ForgotPasswordModalComponent } from './admin/login/forgot-password-moda
     HomeComponent,
     SidebarComponent,
     LoginComponent,
-    ForgotPasswordModalComponent
+    ForgotPasswordModalComponent,
+    AllUsersComponent,
+    AddUsersComponent,
+    ChangePasswordDialogComponent
   ],
   imports: [
     BrowserModule,
