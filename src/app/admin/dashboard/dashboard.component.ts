@@ -10,6 +10,8 @@ import { ServiceService } from 'src/app/shared/service.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  ffplImg: string[] = [];
+  custImg: string[] = [];
   convertImagesForm!: FormGroup;
   fleetguardFile: File | null | undefined;
   customerFile: File | null | undefined;
@@ -22,7 +24,7 @@ export class DashboardComponent implements OnInit {
   labeledTextPathsCUST: string[] = [];
   excelSheetName: string | null = null;
   excelSheetUrl: string | null = null;
-  baseUrl: string = 'http://192.168.0.128:8000';  // Replace with your backend URL
+  baseUrl: string = 'http://3.7.184.223:8000';  // Replace with your backend URL
 
   constructor(
     private service: ServiceService,
@@ -74,6 +76,8 @@ export class DashboardComponent implements OnInit {
 
     this.service.postPdfImagesData(formData).subscribe(
       (res) => {
+        this.ffplImg = res.jpeg_images;
+
         this.fleetguardImages = [];  // Clear previous images
         if (res.jpeg_images && res.jpeg_images.length > 0) {
           this.fleetguardImages = res.jpeg_images.map((imagePath: string) => `${this.baseUrl}${imagePath}`);
@@ -101,6 +105,8 @@ export class DashboardComponent implements OnInit {
 
     this.service.postPdfImagesData(formData).subscribe(
       (res) => {
+        this.custImg = res.jpeg_images;
+
         this.customerImages = [];  // Clear previous images
         if (res.jpeg_images && res.jpeg_images.length > 0) {
           this.customerImages = res.jpeg_images.map((imagePath: string) => `${this.baseUrl}${imagePath}`);
@@ -173,9 +179,10 @@ export class DashboardComponent implements OnInit {
     // Ensure we have values to send
     const processPath = (path: string) => encodeURIComponent(path.replace(this.baseUrl, '').replace(/\\/g, '/'));
 
-    const ffplImage = this.labeledImagePathsFFPL.length > 0 ? processPath(this.labeledImagePathsFFPL[0]) : '';
+    // const ffplImage = this.labeledImagePathsFFPL.length > 0 ? processPath(this.labeledImagePathsFFPL[0]) : '';
+    const ffplImage = this.ffplImg;
     const ffplYoloOutput = this.labeledTextPathsFFPL.length > 0 ? processPath(this.labeledTextPathsFFPL[0]) : '';
-    const custImage = this.labeledImagePathsCUST.length > 0 ? processPath(this.labeledImagePathsCUST[0]) : '';
+    const custImage = this.custImg;
     const custYoloOutput = this.labeledTextPathsCUST.length > 0 ? processPath(this.labeledTextPathsCUST[0]) : '';
 
     // Construct the payload string

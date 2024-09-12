@@ -11,7 +11,9 @@ import { ServiceService } from 'src/app/shared/service.service';
 export class ForgotPasswordModalComponent implements OnInit {
   email: string = '';
   otp: string = '';
+  old_password: string = '';
   new_password: string = '';
+  confirm_password: string = '';
   otpRequested = false;
   otpValidated = false;
   hidePassword = true;
@@ -30,7 +32,7 @@ export class ForgotPasswordModalComponent implements OnInit {
 
   onSubmit() {
     if (this.otpValidated) {
-      this.changePassword();
+      this.changePasswordByUser();
     } else if (this.otpRequested) {
       this.validateOtp();
     } else {
@@ -81,13 +83,15 @@ export class ForgotPasswordModalComponent implements OnInit {
     });
   }
 
-  changePassword() {
+  changePasswordByUser() {
     const data = {
       email: this.email,
-      new_password: this.new_password
+      old_password: this.old_password,
+      new_password: this.new_password,
+      confirm_password: this.confirm_password
     };
 
-    this.service.changePassword(data).subscribe({
+    this.service.changePasswordByUser(data).subscribe({
       next: (response: any) => {
         if (response.message) {
           this.toastr.success(response.message, 'Success');

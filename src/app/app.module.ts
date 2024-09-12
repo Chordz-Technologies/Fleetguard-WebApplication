@@ -11,10 +11,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+// import { AuthinterceptorInterceptor } from '../app/interceptor/authinterceptor.interceptor';
 import { NgChartsModule } from 'ng2-charts';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -68,11 +70,14 @@ import { ChangePasswordDialogComponent } from './admin/sidebar/all-users/change-
     MatSelectModule,
     ToastrModule.forRoot(),
     DatePipe,
-    MatDialogModule
+    MatDialogModule,
+    MatMenuModule
 
   ],
+
+  //, { provide: HTTP_INTERCEPTORS, useClass: AuthinterceptorInterceptor, multi: true }
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
-  
+
 })
 export class AppModule { }

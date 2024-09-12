@@ -48,26 +48,61 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.email, this.password, this.role)
       .subscribe({
         next: (result: any) => {
+
           if (result.jwt && result.role === 'Admin') {
             localStorage.setItem('jwt', result.jwt);
             localStorage.setItem('role', result.role);
             this.router.navigate(['dashboard']);
-            this.toastr.success('Login successful!', 'Success');
+            this.toastr.success(result.message, 'Success');
           }
-          else if (result.jwt && result.role === 'user') {
+          else if (result.jwt && result.role === 'User') {
             localStorage.setItem('jwt', result.jwt);
             localStorage.setItem('role', result.role);
             this.router.navigate(['dashboard']);
-            this.toastr.success('Login successful!', 'Success');
+            this.toastr.success(result.message, 'Success');
           }
           else {
-            this.toastr.error('Login failed. Please check your credentials.', 'Error');
+            this.toastr.error(result.message || 'Invalid credentials. Please check your credentials.', 'Error');
           }
         },
         error: (err: any) => {
           console.error('Error:', err);
-          this.toastr.error('Invalid credentials. Please check your credentials.', 'Error');
+          this.toastr.error(err.error.message || 'Server error. Please try again later.', 'Error');
         }
       });
   }
+
+  // login(event: Event) {
+  //   event.preventDefault(); // Prevent default form submission
+
+  //   this.authService.login(this.email, this.password, this.role)
+  //     .subscribe({
+  //       next: (result: any) => {
+  //         console.log("login works", result);
+
+  //         if (result.jwt) {
+  //           localStorage.setItem('jwt', result.jwt);
+  //           localStorage.setItem('role', result.role);
+
+  //           // Navigate based on the role
+  //           if (result.role === 'Admin') {
+  //             this.router.navigate(['admin/dashboard']);
+  //           } else if (result.role === 'user') {
+  //             this.router.navigate(['user/dashboard']);
+  //           } else {
+  //             this.router.navigate(['dashboard']); // Default route if roles are not defined
+  //           }
+
+  //           this.toastr.success('Login successful!', 'Success');
+  //         } else {
+  //           this.toastr.error('Login failed. Please check your credentials.', 'Error');
+  //         }
+  //       },
+  //       error: (err: any) => {
+  //         console.error('Error:', err);
+  //         this.toastr.error('Invalid credentials. Please check your credentials.', 'Error');
+  //       }
+  //     });
+  // }
+
 }

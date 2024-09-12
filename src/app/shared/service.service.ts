@@ -30,12 +30,22 @@ export class ServiceService {
     return this.http.post<any>(`${this.url}/excelsheetapi/excelsheet/`, payload, { headers });
   }
 
-  changePassword(data: any): Observable<any> {
-    return this.http.post<any>(`${this.url}/user/change-password/`, data);
+  changePasswordByUser(data: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/user/user-change-password/`, data);
   }
 
+  changePasswordByAdmin(data: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/user/admin-change-password/`, data);
+  }
+
+  //get userinfo 
+
+  // forgotPassword(data: any): Observable<any> {
+  //   return this.http.post<any>(`${this.url}/user/forgot-password/`, data);
+  // }
+
   sendMail(data: any): Observable<any> {
-    return this.http.post<any>(`${this.url}/user/forgot-password/`, data);
+    return this.http.post<any>(`${this.url}/user/send-otp/`, data);
   }
 
   verifyOTP(data: any): Observable<any> {

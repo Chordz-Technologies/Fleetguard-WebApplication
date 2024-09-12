@@ -13,7 +13,7 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
 })
 export class AllUsersComponent {
   dataSource!: MatTableDataSource<any>;
-  displayedColumns: string[] = ['id', 'name', 'email', 'password'];
+  displayedColumns: string[] = ['id', 'emp_id', 'name', 'email', 'password'];
 
   constructor(private service: ServiceService, private toastr: ToastrService, private router: Router, public dialog: MatDialog) { }
 
@@ -49,7 +49,7 @@ export class AllUsersComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.service.changePassword({ email: user.email, new_password: result.newPassword }).subscribe({
+        this.service.changePasswordByUser({ email: user.email, new_password: result.newPassword }).subscribe({
           next: () => {
             this.getAllUsers(); // Refresh the list after password change
             this.toastr.success('Password changed successfully!', 'Success'); // Show success message

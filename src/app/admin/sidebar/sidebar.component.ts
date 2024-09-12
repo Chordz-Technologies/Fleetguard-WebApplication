@@ -8,10 +8,10 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent {
   Admin: boolean = localStorage.getItem('role') === 'Admin';
-  User: boolean = localStorage.getItem('role') === 'user';
+  User: boolean = localStorage.getItem('role') === 'User';
 
-  constructor(private router: Router) {}
-  
+  constructor(private router: Router) { }
+
   logout() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('role');
