@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   labeledTextPathsCUST: string[] = [];
   excelSheetName: string | null = null;
   excelSheetUrl: string | null = null;
-  baseUrl: string = 'http://3.7.184.223:8000';  // Replace with your backend URL
+  baseUrl: string = 'https://148.66.157.40';  // Replace with your backend URL
 
   constructor(
     private service: ServiceService,
