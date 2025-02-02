@@ -88,10 +88,10 @@ export class ForgotPasswordModalComponent implements OnInit {
       email: this.email,
       old_password: this.old_password,
       new_password: this.new_password,
-      confirm_password: this.confirm_password
+      confirm_password: this.confirm_password,
     };
-
-    this.service.changePasswordByUser(data).subscribe({
+  
+    this.service.forgotPasswordByUser(data).subscribe({
       next: (response: any) => {
         if (response.message) {
           this.toastr.success(response.message, 'Success');
@@ -103,9 +103,10 @@ export class ForgotPasswordModalComponent implements OnInit {
       error: (err: any) => {
         console.error('Error:', err);
         this.toastr.error(err.error.message || 'Server error. Please try again later.', 'Error');
-      }
+      },
     });
-  }
+  }  
+
 
   togglePasswordVisibility() {
     this.hidePassword = !this.hidePassword;

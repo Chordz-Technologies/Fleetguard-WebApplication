@@ -33,6 +33,7 @@ import { ForgotPasswordModalComponent } from './admin/login/forgot-password-moda
 import { AllUsersComponent } from './admin/sidebar/all-users/all-users.component';
 import { AddUsersComponent } from './admin/sidebar/add-users/add-users.component';
 import { ChangePasswordDialogComponent } from './admin/sidebar/all-users/change-password-dialog/change-password-dialog.component';
+import { AddAdminComponent } from './admin/sidebar/add-admin/add-admin.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { ChangePasswordDialogComponent } from './admin/sidebar/all-users/change-
     ForgotPasswordModalComponent,
     AllUsersComponent,
     AddUsersComponent,
-    ChangePasswordDialogComponent
+    ChangePasswordDialogComponent,
+    AddAdminComponent
   ],
   imports: [
     BrowserModule,

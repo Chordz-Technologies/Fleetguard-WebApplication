@@ -12,9 +12,7 @@ export class AuthGuard implements CanActivate {
   ) { }
 
   canActivate(): boolean {
-
-
-    const token = localStorage.getItem('jwt');
+    const token = localStorage.getItem('access');
     if (token) {
       return true;
     } else {

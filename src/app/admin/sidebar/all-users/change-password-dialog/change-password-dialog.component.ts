@@ -93,7 +93,14 @@ export class ChangePasswordDialogComponent {
       confirm_password: this.confirm_password
     };
 
-    this.service.changePasswordByAdmin(data).subscribe({
+    const token = localStorage.getItem('access'); // Adjust this based on your app's token storage mechanism
+
+    if (!token) {
+      this.toastr.error('Authorization token is missing. Please log in again.', 'Error');
+      return;
+    }
+
+    this.service.changePasswordByAdmin(data, token).subscribe({
       next: (response: any) => {
         if (response.message) {
           this.toastr.success(response.message, 'Success');

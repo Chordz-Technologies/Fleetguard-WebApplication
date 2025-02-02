@@ -15,9 +15,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   userInfo: any = null;
-
-
-
+  
   constructor(private observer: BreakpointObserver, private toastr: ToastrService, private authService: AuthService) { }
 
   ngOnInit(): void {
@@ -44,15 +42,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
         this.userInfo = user;
       },
       error: (err: any) => {
-
         this.toastr.error(err.error.message || 'Server error. Please try again later.', 'Error');
       }
     });
   }
-
-
-
-
-
-
 }

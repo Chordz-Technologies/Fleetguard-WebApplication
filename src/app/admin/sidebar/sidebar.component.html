@@ -15,6 +15,10 @@
           <mat-icon>dashboard</mat-icon>
           <span>Home</span>
         </button>
+        <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['add-admin']">
+          <mat-icon>peoples</mat-icon>
+          <span>Add Admin</span>
+        </button>
         <button mat-button class="menu-button" [routerLinkActive]="['active']" [routerLink]="['all-users']">
           <mat-icon>peoples</mat-icon>
           <span>Users</span>

@@ -21,19 +21,23 @@
     <div class="row pt-3">
       <div *ngIf="fleetguardImages.length > 0" class="col-lg-6 col-md-6 col-sm-12 text-center">
         <div *ngFor="let image of fleetguardImages; let i = index">
-          <input type="checkbox" [id]="'fleetguardImage' + i" (change)="selectImage(image, 'FFPL', $event)">
+          <input type="checkbox" class="mycheckbox" [id]="'fleetguardImage' + i"
+            (change)="selectImage(image, 'FFPL', $event)">
+          Please Select Image <br>
           <label [for]="'fleetguardImage' + i">
             <a *ngIf="image" [href]="image" target="_blank"><img [src]="image" alt="Converted Fleetguard Image"
-                class="img-fluid pb-3" [style.transform]="'rotate('+rotationDegree1+'deg)'"></a>
+                class="img-fluid pb-3 pt-3" [style.transform]="'rotate('+rotationDegree1+'deg)'"></a>
           </label>
         </div>
       </div>
       <div *ngIf="customerImages.length > 0" class="col-lg-6 col-md-6 col-sm-12 text-center">
         <div *ngFor="let image of customerImages; let i = index">
-          <input type="checkbox" [id]="'customerImage' + i" (change)="selectImage(image, 'CUST', $event)">
+          <input type="checkbox" class="mycheckbox" [id]="'customerImage' + i"
+            (change)="selectImage(image, 'CUST', $event)">
+          Please Select Image <br>
           <label [for]="'customerImage' + i">
             <a *ngIf="image" [href]="image" target="_blank"><img [src]="image" alt="Converted Customer Image"
-                class="img-fluid pb-3" [style.transform]="'rotate('+rotationDegree2+'deg)'" /></a>
+                class="img-fluid pb-3 pt-3" [style.transform]="'rotate('+rotationDegree2+'deg)'" /></a>
           </label>
         </div>
       </div>

@@ -4,12 +4,12 @@ import { ToastrService } from 'ngx-toastr';
 import { ServiceService } from 'src/app/shared/service.service';
 
 @Component({
-  selector: 'app-add-users',
-  templateUrl: './add-users.component.html',
-  styleUrls: ['./add-users.component.scss']
+  selector: 'app-add-admin',
+  templateUrl: './add-admin.component.html',
+  styleUrls: ['./add-admin.component.scss']
 })
-export class AddUsersComponent implements OnInit {
-  usersForm!: FormGroup;
+export class AddAdminComponent implements OnInit {
+  adminForm!: FormGroup;
 
   constructor(
     private service: ServiceService,
@@ -18,7 +18,7 @@ export class AddUsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.usersForm = this.fb.group({
+    this.adminForm = this.fb.group({
       empId: this.fb.control(''),
       name: this.fb.control(''),
       email: this.fb.control(''),
@@ -26,15 +26,15 @@ export class AddUsersComponent implements OnInit {
     });
   }
 
-  addUsers() {
-    const usersData = {
-      emp_id: this.usersForm.value.empId,
-      name: this.usersForm.value.name,
-      email: this.usersForm.value.email,
-      password: this.usersForm.value.password,
+  addAdmin() {
+    const adminData = {
+      emp_id: this.adminForm.value.empId,
+      name: this.adminForm.value.name,
+      email: this.adminForm.value.email,
+      password: this.adminForm.value.password,
     };
 
-    const { emp_id, name, email, password } = usersData;
+    const { emp_id, name, email, password } = adminData;
 
     // Validation for empty fields
     if (!emp_id || !name || !email || !password) {
@@ -71,11 +71,11 @@ export class AddUsersComponent implements OnInit {
       return;
     }
 
-    this.service.addUsers(usersData, token).subscribe({
+    this.service.addAdmin(adminData, token).subscribe({
       next: (res: any) => {
         if (res.message) {
           this.toastr.success(res.message, 'Success');
-          this.usersForm.reset();
+          this.adminForm.reset();
         } else {
           this.toastr.error(res.message, 'Error');
         }
@@ -87,3 +87,4 @@ export class AddUsersComponent implements OnInit {
     });
   }
 }
+

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ServiceService } from 'src/app/shared/service.service';
+import { AuthService } from 'src/app/shared/service/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,17 +25,20 @@ export class DashboardComponent implements OnInit {
   labeledTextPathsCUST: string[] = [];
   excelSheetName: string | null = null;
   excelSheetUrl: string | null = null;
-  baseUrl: string = 'http://148.66.157.40:8000';  // Replace with your backend URL
+  baseUrl: string = 'http://148.66.159.168:8000';  // Replace with your backend URL
+  excelGenerated: boolean | undefined;
 
   constructor(
     private service: ServiceService,
     private fb: FormBuilder,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.convertImagesForm = this.fb.group({});
+    this.authService.startTokenRefreshTimer(); // Start token refresh on component load
   }
 
   rotationDegree1: number = 0;
@@ -50,12 +54,21 @@ export class DashboardComponent implements OnInit {
 
   onFileSelected(event: any, type: string) {
     const fileList: FileList = event.target.files;
+
     if (fileList.length > 0) {
       if (type === 'fleetguard') {
         this.fleetguardFile = fileList[0];
       } else if (type === 'customer') {
         this.customerFile = fileList[0];
       }
+
+      // **Reset data only if a new file is selected after Excel generation**
+      if (this.excelGenerated) {
+        this.resetData();
+        this.toastr.info('Data reset for new file processing', 'New File Selected');
+        this.excelGenerated = false; // Reset flag
+      }
+
     } else {
       if (type === 'fleetguard') {
         this.fleetguardFile = null;
@@ -63,6 +76,20 @@ export class DashboardComponent implements OnInit {
         this.customerFile = null;
       }
     }
+  }
+
+  resetData() {
+    this.ffplImg = [];
+    this.custImg = [];
+    this.fleetguardImages = [];
+    this.customerImages = [];
+    this.selectedImages = [];
+    this.labeledImagePathsFFPL = [];
+    this.labeledImagePathsCUST = [];
+    this.labeledTextPathsFFPL = [];
+    this.labeledTextPathsCUST = [];
+    this.excelSheetName = null;
+    this.excelSheetUrl = null;
   }
 
   postFleetguardData() {
@@ -73,25 +100,22 @@ export class DashboardComponent implements OnInit {
 
     const formData: FormData = new FormData();
     formData.append('file', this.fleetguardFile);
+    const token = this.authService.getAccessToken();
 
-    this.service.postPdfImagesData(formData).subscribe(
-      (res) => {
-        this.ffplImg = res.jpeg_images;
-
-        this.fleetguardImages = [];  // Clear previous images
-        if (res.jpeg_images && res.jpeg_images.length > 0) {
+    if (token) {
+      this.service.postPdfImagesData(formData, token).subscribe({
+        next: (res) => {
+          this.ffplImg = res.jpeg_images;
           this.fleetguardImages = res.jpeg_images.map((imagePath: string) => `${this.baseUrl}${imagePath}`);
           this.toastr.success('Fleetguard file successfully converted', 'Success');
-        } else {
+        },
+        error: () => {
           this.toastr.error('An error occurred with Fleetguard file conversion', 'Error');
         }
-      },
-      (err) => {
-        this.toastr.error('An error occurred with Fleetguard file conversion', 'Error');
-      }
-    );
-
-    this.convertImagesForm.reset();
+      });
+    } else {
+      this.authService.logout();
+    }
   }
 
   postCustomerData() {
@@ -102,25 +126,22 @@ export class DashboardComponent implements OnInit {
 
     const formData: FormData = new FormData();
     formData.append('file', this.customerFile);
+    const token = this.authService.getAccessToken();
 
-    this.service.postPdfImagesData(formData).subscribe(
-      (res) => {
-        this.custImg = res.jpeg_images;
-
-        this.customerImages = [];  // Clear previous images
-        if (res.jpeg_images && res.jpeg_images.length > 0) {
+    if (token) {
+      this.service.postPdfImagesData(formData, token).subscribe({
+        next: (res) => {
+          this.custImg = res.jpeg_images;
           this.customerImages = res.jpeg_images.map((imagePath: string) => `${this.baseUrl}${imagePath}`);
           this.toastr.success('Customer file successfully converted', 'Success');
-        } else {
+        },
+        error: () => {
           this.toastr.error('An error occurred with Customer file conversion', 'Error');
         }
-      },
-      (err) => {
-        this.toastr.error('An error occurred with Customer file conversion', 'Error');
-      }
-    );
-
-    this.convertImagesForm.reset();
+      });
+    } else {
+      this.authService.logout();
+    }
   }
 
   selectImage(imagePath: string, imgType: string, event: any) {
@@ -192,8 +213,9 @@ export class DashboardComponent implements OnInit {
     this.service.generateExcelSheet(payload).subscribe(
       (res) => {
         this.excelSheetName = res.excel_file; // Assuming response contains the sheet name
-        this.excelSheetUrl = `${this.baseUrl}/media/${this.excelSheetName}`; // Construct the URL to the Excel file
+        this.excelSheetUrl = `${this.baseUrl}/${this.excelSheetName}`; // Construct the URL to the Excel file
         this.toastr.success('Excel sheet generated successfully', 'Success');
+        this.excelGenerated = true; // **Set flag after generation**
       },
       (err) => {
         console.error('Error:', err);
